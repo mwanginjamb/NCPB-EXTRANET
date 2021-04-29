@@ -20,7 +20,7 @@ class Navhelper extends Component{
         $url = new Services($service);
 
         $soapWsdl= $url->getUrl();
-        //Yii::$app->recruitment->printrr($soapWsdl);
+        // Yii::$app->recruitment->printrr($params);
 
         $filter = [];
         if(sizeof($params)){
@@ -222,15 +222,22 @@ class Navhelper extends Component{
 
     /*Method to commit single field data to services*/
 
+<<<<<<< HEAD
     public function Commit($service,$field=[],$filter=[]){
        
         $commitService = $service;
+=======
+    public function Commit($service,$field=[],$filter=[],$Key=''){
+       
+        $commitService = Yii::$app->params['ServiceName'][$service];
+>>>>>>> 2727d1b8dae97038437a51d09f31859098cb6d1d
 
         if(sizeof($field)){
             foreach($field as $key => $value){
                 $fieldName = $key;
                 $fieldValue = $value;
             }
+<<<<<<< HEAD
         }
 
         $service = Yii::$app->params['ServiceName'][$commitService];
@@ -239,25 +246,36 @@ class Navhelper extends Component{
             foreach($filter as $key => $value){
                 $filter[] = ['Field' => $key, 'Criteria' =>$value];
             }
+=======
+>>>>>>> 2727d1b8dae97038437a51d09f31859098cb6d1d
         }
 
-        $request = Yii::$app->navhelper->getData($service, $filter);
+        
 
+        // A Key arg. is provided in situations where field to commit is part of the table composite Key in Nav
+            if(empty($Key)){
+                $request = Yii::$app->navhelper->getData($commitService , $filter);
+            }else{
+                $request = null;
+            }
+        
 
-        $data = [];
-        if(is_array($request)){
+        
             $data = [
+<<<<<<< HEAD
                 'Key' => $request[0]->Key,
+=======
+                'Key' => !empty($Key)?$Key:$request[0]->Key,
+>>>>>>> 2727d1b8dae97038437a51d09f31859098cb6d1d
                 $fieldName => $fieldValue
             ];
-        }else{
-            Yii::$app->response->format = \yii\web\response::FORMAT_JSON;
-            return ['error' => $request];
-        }
+        
+
+         // Yii::$app->recruitment->printrr($data);
 
 
 
-        $result = Yii::$app->navhelper->updateData($service,$data);
+        $result = Yii::$app->navhelper->updateData($commitService ,$data);
 
         Yii::$app->response->format = \yii\web\response::FORMAT_JSON;
 
